@@ -1,0 +1,51 @@
+{
+  "name": "{{projectInfo.name}}",
+  "version": "{{projectInfo.version}}",
+  "description": "{{projectInfo.desc}}",
+  "scripts": {
+    "init": "export NODE_ENV=local && node bin/init",
+    "start": "export NODE_ENV=local && node bin/start",
+    "create": "export NODE_ENV=local && sequelize db:create --charset utf8mb4 --collate utf8mb4_unicode_ci",
+    "sync": "export NODE_ENV=local && node bin/sync",
+    "init:test": "export NODE_ENV=test && node bin/init",
+    "start:test": "export NODE_ENV=test && node bin/start",
+    "create:test": "export NODE_ENV=test && sequelize db:create --charset utf8mb4 --collate utf8mb4_unicode_ci",
+    "sync:test": "export NODE_ENV=test && node bin/sync",
+    "init:prod": "export NODE_ENV=production && node bin/init",
+    "start:prod": "export NODE_ENV=production && pm2 start bin/start --name HEMA-STUDIO-PROD",
+    "sync:prod": "export NODE_ENV=production && node bin/sync",
+    "create:prod": "export NODE_ENV=production && sequelize db:create --charset utf8mb4 --collate utf8mb4_unicode_ci",
+    "init:audit": "export NODE_ENV=audit && node bin/init",
+    "start:audit": "export NODE_ENV=audit && pm2 start bin/start --name HEMA-STUDIO-AUDIT",
+    "sync:audit": "export NODE_ENV=audit && node bin/sync",
+    "create:audit": "export NODE_ENV=audit && sequelize db:create --charset utf8mb4 --collate utf8mb4_unicode_ci",
+    "init:dev": "export NODE_ENV=dev && node bin/init",
+    "start:dev": "export NODE_ENV=dev && pm2 start bin/start --name HEMA-STUDIO-AUDIT",
+    "sync:dev": "export NODE_ENV=dev && node bin/sync",
+    "create:dev": "export NODE_ENV=dev && sequelize db:create --charset utf8mb4 --collate utf8mb4_unicode_ci"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "commander": "^2.20.0",
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.12.0",
+    "mocha": "^6.1.4",
+    "power-assert": "^1.6.1",
+    "sequelize-cli": "^5.4.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "deepmerge": "^3.2.0",
+    "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^1.6.5",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^5.8.5",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.9.0"
+  }
+}

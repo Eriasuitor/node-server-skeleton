@@ -1,1 +1,2 @@
-# node-server-skeleton
+# {{projectInfo.name}}
+{{projectInfo.desc}}
