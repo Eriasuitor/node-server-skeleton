@@ -11,4 +11,4 @@ exports.jwtStrategy = () => {
   })
 }
 
-exports.jwtSign = (profile) => jwt.sign(profile, config.jwt.key, {expiresIn: config.jwt.expiresIn})
+exports.jwtSign = (payload) => jwt.sign(payload, config.jwt.key, {expiresIn: config.jwt.expiresIn})

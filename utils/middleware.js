@@ -4,6 +4,7 @@ const db = require('../database/models')
 const {superError} = require('./error')
 // eslint-disable-next-line no-unused-vars
 const express = require('express')
+const Role = require('../enum/role')
 const Logger = require('./logger')
 
 /**
@@ -18,7 +19,7 @@ function validateSchema(value, schema, options = {abortEarly: false}, errorStatu
   const result = joi.validate(value, schema, options)
   if (result.error) {
     superError().status(errorStatus).message(result.error.message)
-    /**
+        /**
          * Will throw 500 when data can't be JSON.stringify, such as value from sequelize without raw: true
          */
         .data({details: result.error.details})
@@ -84,6 +85,59 @@ exports.validateSchemasAndSetTrans = (
       res.status(status).send(body)
     } catch (error) {
       req.transaction && !req.transaction.finished && await req.transaction.rollback()
+      next(error)
+    }
+  }
+}
+
+/**
+ * have to be used after the usage of middleware validateToken()
+ * @param {string} roleName
+ * @return {*}
+ */
+exports.withRole = (roleName) => {
+  /**
+   * @param {express.request} req
+   * @param {express.response} res
+   * @param {*} next
+   */
+  return async (req, res, next) => {
+    try {
+      if (!req.user.roles.includes(roleName)) {
+        superError(403).throw()
+      }
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+}
+
+/**
+ * this middleware will add userId to req.body, req.query, req.params according req.user.
+ * withOutBody can make body pure.
+ * force will add userId for everyone even if the request was sent by user who is admin.
+ * and administrator can add restrict and make it truthy for req.query when sending a request as a hint of requirement to add userId.
+ * @param {{withOutBody: boolean, force: boolean}} options
+ * @return {*}
+ */
+exports.selfOnly = ({withOutBody, force} = {}) => {
+  /**
+   * @param {express.request} req
+   * @param {express.response} res
+   * @param {*} next
+   */
+  return async (req, res, next) => {
+    try {
+      if (force || !req.user.roles.includes(Role.Admin) || req.query.restrict) {
+        delete req.query.restrict
+        if (!withOutBody) {
+          req.body.userId = req.user.id
+        }
+        req.params.userId = req.query.userId = req.user.id
+      }
+      next()
+    } catch (error) {
       next(error)
     }
   }

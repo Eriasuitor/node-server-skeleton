@@ -1,7 +1,8 @@
 {
 	"eslint.enable": true,
     "eslint.autoFixOnSave": true,
-    "files.eol": "\n",
+	"files.eol": "\n",
+	"eslint.alwaysShowStatus": true,
     "editor.insertSpaces": true,
 	"editor.minimap.enabled": false,
 	"cSpell.words": [
@@ -19,5 +20,5 @@
 	"search.exclude": {
 		"**/node_modules": false
 	},
-	"workbench.colorTheme": "Default Light+"
+	"workbench.colorTheme": "Default Light+",
 }
