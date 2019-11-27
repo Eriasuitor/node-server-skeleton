@@ -1,10 +1,11 @@
-class SuperError extends Error {
+class SuperError extends Error {}
+class _SuperError {
   constructor(status, message, data, body) {
-    super()
-    this.status = status
-    this.message = message
-    this.data = data
-    this.body = body
+    this.error = new SuperError()
+    this.error.status = status
+    this.error.message = message
+    this.error.data = data
+    this.error.body = body
   }
 
   /**
@@ -12,7 +13,7 @@ class SuperError extends Error {
    * @return {SuperError}
    */
   status(status) {
-    this.status = status
+    this.error.status = status
     return this
   }
 
@@ -21,12 +22,12 @@ class SuperError extends Error {
    * @return {SuperError}
    */
   data(data) {
-    this.data = data
+    this.error.data = data
     return this
   }
 
   body(body) {
-    this.body = body
+    this.error.body = body
     return this
   }
 
@@ -35,13 +36,12 @@ class SuperError extends Error {
    * @return {SuperError}
    */
   message(message) {
-    this.message = message
+    this.error.message = message
     return this
   }
 
   throw() {
-    // eslint-disable-next-line no-throw-literal
-    throw this
+    throw this.error
   }
 }
 
@@ -52,8 +52,4 @@ class SuperError extends Error {
  * @param {JSON} body
  * @return {SuperError}
  */
-const superError = (status, message, data, body) => new SuperError(status, message, data, body)
-
-module.exports = {
-  superError
-}
+exports.superError = (status, message, data, body) => new _SuperError(status, message, data, body)
