@@ -1,6 +1,5 @@
 const joi = require('joi')
 const passport = require('passport')
-const db = require('../database/models')
 const {superError} = require('./error')
 // eslint-disable-next-line no-unused-vars
 const express = require('express')
@@ -56,35 +55,6 @@ exports.validateSchemas = (
       body = validateSchema(body, resSchema, resSchemaOptions, 510)
       res.status(status).send(body)
     } catch (error) {
-      next(error)
-    }
-  }
-}
-
-exports.validateSchemasAndSetTrans = (
-    {schema: reqSchema, options: reqSchemaOptions, apiOptions = {}},
-    operation,
-    {schema: resSchema, options: resSchemaOptions = {stripUnknown: true, abortEarly: false}},
-    status = 200) => {
-  /**
-   * @param {express.request} req
-   * @param {express.response} res
-   * @param {*} next
-   */
-  return async (req, res, next) => {
-    try {
-      if (apiOptions.queryMode) {
-        req.query = validateSchema(req.query, reqSchema, reqSchemaOptions)
-      } else {
-        req.body = validateSchema(req.body, reqSchema, reqSchemaOptions)
-      }
-      req.transaction = await db.createDbTransaction()
-      let body = await operation(req, res)
-      body = validateSchema(body, resSchema, resSchemaOptions, 510)
-      await req.transaction.commit()
-      res.status(status).send(body)
-    } catch (error) {
-      req.transaction && !req.transaction.finished && await req.transaction.rollback()
       next(error)
     }
   }
