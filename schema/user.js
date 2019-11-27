@@ -1,5 +1,5 @@
 const joi = require('joi')
-const {common} = require('./index')
+const common = require('./common')
 const Role = require('../enum/role')
 
 exports.loginInfoSchema = () => joi.object().keys({
