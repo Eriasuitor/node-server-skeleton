@@ -7,7 +7,7 @@ module.exports = class {
    * @param {express.request} req
    */
   static async login(req) {
-    const {userId, password} = req
+    const {userId, password} = req.body
     return UserService.login(userId, password)
   }
 
